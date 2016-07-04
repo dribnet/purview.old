@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import argparse
@@ -7,11 +8,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Fetch members of an org')
     parser.add_argument('-o','--org', help='filter by org', default=None)
     parser.add_argument('-i','--id', help='id of gist', default="ccd26455c5e6c1f8385655c175d4c3f0")
-    parser.add_argument('-s','--secret', help='json credentials (or "none")', default="secret.json")
+    parser.add_argument('-s','--secret', help='json credentials (or "none")', default="env")
     args = parser.parse_args()
 
     params = {}
-    if args.secret.lower() != "none":
+    if args.secret.lower() == "env":
+        params = {
+            "id": os.environ['GITHUB_ID'],
+            "secret": os.environ['GITHUB_SECRET']
+        }
+    elif args.secret.lower() != "none":
         try:
             with open(args.secret) as json_file:
                 params = json.load(json_file)

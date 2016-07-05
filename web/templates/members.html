@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>members of organization {{ org }}</title>
+  </head>
+  <body>
+    <h1>members of organization {{ org }}</h1>
+
+    <table>
+        <tr>
+            {% for k in keys %}
+                <th>{{ k }}</th>
+            {% endfor %}
+        </tr>
+        {% for m in members %}
+            <tr>
+            {% for k in keys %}
+                {% if k == "avatar_url" %}
+                    <td><img src="{{ m[k] }}&s=84"/></td>
+                {% else %}
+                    <td>{{ m[k] }}</td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>

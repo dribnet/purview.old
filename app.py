@@ -2,6 +2,7 @@ import os
 import time
 import json
 from flask import Flask, Response
+from flask import render_template
 import requests
 from werkzeug.contrib.cache import SimpleCache
 
@@ -31,8 +32,7 @@ def get_settings():
 def get_time():
     return time.ctime()
 
-@app.route('/members/<org>.json')
-def get_members(org):
+def fetch_members_json(org):
     cache_key = 'members/{}'.format(org)
     rv = cache.get(cache_key)
     if rv is None:
@@ -45,7 +45,37 @@ def get_members(org):
         }
         rv = json.dumps(r_package)
         cache.set(cache_key, rv, timeout=get_members_timeout)
+    return rv
+
+@app.route('/members/<org>.raw.json')
+def get_members_raw_json(org):
+    json = fetch_members_json(org)
+    return Response(json, mimetype='application/json')
+
+members_keys = ["login", "avatar_url", "html_url"]
+def get_members_dict(org):
+    j = fetch_members_json(org)
+    members_list = json.loads(j)["payload"]
+    filtered_list = []
+    for d in members_list:
+        filtered_list.append({ k: d[k] for k in members_keys })
+    return filtered_list
+
+@app.route('/members/<org>.json')
+def get_members_json(org):
+    d = get_members_dict(org)
+    rv = json.dumps(d)
     return Response(rv, mimetype='application/json')
+
+# consider this cache idea: https://gist.github.com/glenrobertson/954da3acec84606885f5
+
+@app.route('/members/<org>.html')
+def get_members_html(org):
+    d = get_members_dict(org)
+    return render_template("members.html",
+                           org=org,
+                           keys=members_keys,
+                           members=d)
 
 @app.route("/cachedtime")
 def get_cachedtime():

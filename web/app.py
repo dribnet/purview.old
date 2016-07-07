@@ -5,6 +5,7 @@ from flask import Flask, Response
 from flask import render_template
 import requests
 from werkzeug.contrib.cache import SimpleCache
+from flask_cache_response_decorator import cache
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -27,9 +28,33 @@ def hello():
 def get_settings():
     return "APP_SETTINGS: {}".format(os.environ['APP_SETTINGS'])
 
+### these versions of time / cachedtime are useful for debugging
+
+# route that is live (dynamic)
 @app.route("/time")
 def get_time():
     return time.ctime()
+
+# route that is live for client but cached for server
+@app.route("/cachedtime_server")
+def get_cachedtime_server():
+    rv = server_cache.get('cachedtime')
+    if rv is None:
+        rv = get_time()
+        server_cache.set('cachedtime', rv, timeout=default_timeout)
+    return rv
+
+# route that is live for server but cached for client
+@app.route("/cachedtime_client")
+@cache(default_timeout)
+def get_cachedtime_client():
+    return get_time()
+
+# default will be to cache on server and client
+@app.route("/cachedtime")
+@cache(default_timeout)
+def get_cachedtime():
+    return get_cachedtime_server()
 
 def fetch_members_json(org):
     cache_key = 'members/{}'.format(org)
@@ -75,14 +100,6 @@ def get_members_html(org):
                            org=org,
                            keys=members_keys,
                            members=d)
-
-@app.route("/cachedtime")
-def get_cachedtime():
-    rv = server_cache.get('cachedtime')
-    if rv is None:
-        rv = get_time()
-        server_cache.set('cachedtime', rv, timeout=default_timeout)
-    return rv
 
 if __name__ == '__main__':
     app.run()

@@ -72,6 +72,7 @@ def fetch_members_json(org):
     return rv
 
 @app.route('/members/<org>.raw.json')
+@cache(default_timeout)
 def get_members_raw_json(org):
     json = fetch_members_json(org)
     return Response(json, mimetype='application/json')
@@ -86,14 +87,14 @@ def get_members_dict(org):
     return filtered_list
 
 @app.route('/members/<org>.json')
+@cache(default_timeout)
 def get_members_json(org):
     d = get_members_dict(org)
     rv = json.dumps(d)
     return Response(rv, mimetype='application/json')
 
-# consider this cache idea: https://gist.github.com/glenrobertson/954da3acec84606885f5
-
 @app.route('/members/<org>.html')
+@cache(default_timeout)
 def get_members_html(org):
     d = get_members_dict(org)
     return render_template("members.html",

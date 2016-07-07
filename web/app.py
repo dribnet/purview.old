@@ -28,33 +28,71 @@ def hello():
 def get_settings():
     return "APP_SETTINGS: {}".format(os.environ['APP_SETTINGS'])
 
-### these versions of time / cachedtime are useful for debugging
+def time_get_raw_json(args):
+    return '{{"time": "{}"}}'.format(time.ctime())
 
-# route that is live (dynamic)
-@app.route("/time")
-def get_time():
-    return time.ctime()
+time_keys = [ "time" ]
+time_cache_key = "time"
 
-# route that is live for client but cached for server
-@app.route("/cachedtime_server")
-def get_cachedtime_server():
-    rv = server_cache.get('cachedtime')
+def fetch_and_cache_json(raw_get_fn, args, cache_key):
+    rv = server_cache.get(cache_key)
     if rv is None:
-        rv = get_time()
-        server_cache.set('cachedtime', rv, timeout=default_timeout)
+        rv = raw_get_fn(args)
+        r_json = json.loads(rv)
+        cache_time = time.ctime()
+        r_package = {
+            "payload": r_json,
+            "cachetime": cache_time
+        }
+        rv = json.dumps(r_package)
+        server_cache.set(cache_key, rv, timeout=default_timeout)
     return rv
 
-# route that is live for server but cached for client
-@app.route("/cachedtime_client")
-@cache(default_timeout)
-def get_cachedtime_client():
-    return get_time()
+def fetch_filtered_json(raw_get_fn, args, cache_key, filter_keys):
+    if cache_key == None:
+        rv = raw_get_fn(args)
+        raw_map = json.loads(rv)
+    else:
+        rv = fetch_and_cache_json(raw_get_fn, args, cache_key)
+        raw_map = json.loads(rv)["payload"]
+    filtered_list = []
+    for k,v in raw_map.items():
+        filtered_list.append({ k: v for k in filter_keys })
+    return json.dumps(filtered_list)
 
-# default will be to cache on server and client
-@app.route("/cachedtime")
+# route that is live (dynamic)
+@app.route("/time.raw.live.json")
+def get_time_live():
+    return time_get_raw_json(None)
+
+@app.route("/time.raw.json")
 @cache(default_timeout)
-def get_cachedtime():
-    return get_cachedtime_server()
+def get_time_raw():
+    return fetch_and_cache_json(time_get_raw_json, None, time_cache_key)
+
+@app.route("/time.live.json")
+def get_time_live_json():
+    return fetch_filtered_json(time_get_raw_json, None, None, time_keys)
+
+@app.route("/time.json")
+@cache(default_timeout)
+def get_time_json():
+    return fetch_filtered_json(time_get_raw_json, None, time_cache_key, time_keys)
+
+@app.route("/time.live.html")
+def get_time_live_html():
+    j = fetch_filtered_json(time_get_raw_json, None, None, time_keys)
+    return render_template("time.html",
+                           time=j)
+
+@app.route("/time.html")
+@cache(default_timeout)
+def get_time_html():
+    j = fetch_filtered_json(time_get_raw_json, None, time_cache_key, time_keys)
+    return render_template("time.html",
+                           time=j)
+
+### now do something similar for "org members"
 
 def fetch_members_json(org):
     cache_key = 'members/{}'.format(org)

@@ -1,25 +1,29 @@
 <html>
   <head>
-    <title>members of organization {{ org }}</title>
+    <title>forks of gist_id {{ gist_id }}</title>
   </head>
   <body>
-    <h1>members of organization {{ org }}</h1>
+    <h1>forks of gist_id {{ gist_id }}</h1>
 
     <table>
         <tr>
             {% for k in keys %}
                 <th>{{ k }}</th>
             {% endfor %}
+            <th>bl.ocks.org current</th>
+            <th>purview versions</th>
         </tr>
-        {% for m in members %}
+        {% for m in forks %}
             <tr>
             {% for k in keys %}
-                {% if k == "avatar_url" %}
+                {% if k.endswith("avatar_url") %}
                     <td><img src="{{ m[k] }}&s=60"/></td>
                 {% else %}
                     <td>{{ m[k] }}</td>
                 {% endif %}
             {% endfor %}
+            <td><a href="http://bl.ocks.org/{{ m["owner/login"] }}/{{ m["id"] }}">blocks</a></td>
+            <td><a href="/versions/{{ m["id"] }}">purview</a></td>
             </tr>
         {% endfor %}
     </table>

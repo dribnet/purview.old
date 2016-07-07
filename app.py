@@ -42,6 +42,13 @@ def fetch_and_cache_json(raw_get_fn, args, cache_key):
         server_cache.set(cache_key, rv, timeout=default_timeout)
     return rv
 
+def nested_extract(m, key):
+    keys = key.split("/")
+    cur_m = m
+    for k in keys:
+        cur_m = cur_m[k]
+    return cur_m
+
 def fetch_filtered_json(raw_get_fn, args, cache_key, filter_keys):
     if cache_key == None:
         rv = raw_get_fn(args)
@@ -51,7 +58,7 @@ def fetch_filtered_json(raw_get_fn, args, cache_key, filter_keys):
         raw_list = json.loads(rv)["payload"]
     filtered_list = []
     for e in raw_list:
-        filtered_list.append({ k: e[k] for k in filter_keys })
+        filtered_list.append({ k: nested_extract(e,k) for k in filter_keys })
     return json.dumps(filtered_list)
 
 # here is the core time api
@@ -135,6 +142,34 @@ def get_members_html(org):
     j = fetch_filtered_json(members_get_raw_json, org, members_cache_key(org), members_keys)
     return render_template("members.html",
                            org=org, keys=members_keys, members=json.loads(j))
+
+### should now be easy to add "list gist forks"
+
+# here is the core org members api
+def forks_get_raw_json(gist_id):
+    r = requests.get('https://api.github.com/gists/{}/forks'.format(gist_id))
+    return r.text
+
+forks_keys = ["id", "owner/login", "owner/avatar_url", "owner/html_url"]
+def forks_cache_key(gist_id):
+    return "forks/{}".format(gist_id)
+
+@app.route("/forks/<gist_id>.raw.json")
+@cache(default_timeout)
+def get_forks_raw(gist_id):
+    return fetch_and_cache_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id))
+
+@app.route("/forks/<gist_id>.json")
+@cache(default_timeout)
+def get_forks_json(gist_id):
+    return fetch_filtered_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id), forks_keys)
+
+@app.route("/forks/<gist_id>.html")
+@cache(default_timeout)
+def get_forks_html(gist_id):
+    j = fetch_filtered_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id), forks_keys)
+    return render_template("forks.html",
+                           gist_id=gist_id, keys=forks_keys, forks=json.loads(j))
 
 if __name__ == '__main__':
     app.run()

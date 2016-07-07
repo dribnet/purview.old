@@ -15,10 +15,9 @@ auth_params = {
 }
 
 # todo: deployed should be memcached
-cache = SimpleCache()
+server_cache = SimpleCache()
 
-cachedtime_timeout = 5 * 60
-get_members_timeout = 5 * 60
+default_timeout = 5 * 60
 
 @app.route('/')
 def hello():
@@ -34,7 +33,7 @@ def get_time():
 
 def fetch_members_json(org):
     cache_key = 'members/{}'.format(org)
-    rv = cache.get(cache_key)
+    rv = server_cache.get(cache_key)
     if rv is None:
         r = requests.get('https://api.github.com/orgs/{}/members'.format(org), params=auth_params)
         r_json = json.loads(r.text)
@@ -44,7 +43,7 @@ def fetch_members_json(org):
             "cachetime": cache_time
         }
         rv = json.dumps(r_package)
-        cache.set(cache_key, rv, timeout=get_members_timeout)
+        server_cache.set(cache_key, rv, timeout=default_timeout)
     return rv
 
 @app.route('/members/<org>.raw.json')
@@ -79,10 +78,10 @@ def get_members_html(org):
 
 @app.route("/cachedtime")
 def get_cachedtime():
-    rv = cache.get('cachedtime')
+    rv = server_cache.get('cachedtime')
     if rv is None:
         rv = get_time()
-        cache.set('cachedtime', rv, timeout=cachedtime_timeout)
+        server_cache.set('cachedtime', rv, timeout=default_timeout)
     return rv
 
 if __name__ == '__main__':

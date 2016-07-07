@@ -22,7 +22,7 @@ default_timeout = 5 * 60
 
 @app.route('/')
 def hello():
-    return "Hello World!"
+    return render_template("home.html")
 
 @app.route('/settings')
 def get_settings():

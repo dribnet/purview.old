@@ -14,8 +14,8 @@ if __name__ == "__main__":
     params = {}
     if args.secret.lower() == "env":
         params = {
-            "id": os.environ['GITHUB_ID'],
-            "secret": os.environ['GITHUB_SECRET']
+            "client_id": os.environ['GITHUB_ID'],
+            "client_secret": os.environ['GITHUB_SECRET']
         }
     elif args.secret.lower() != "none":
         try:
@@ -26,8 +26,7 @@ if __name__ == "__main__":
         except:
             print("secret.json file could not be read, requests will be unauthenticated")
 
-    # strangely, this only works when not authenticated?
-    r = requests.get('https://api.github.com/gists/{}/forks'.format(args.id))
+    r = requests.get('https://api.github.com/gists/{}/forks'.format(args.id), params=params)
     print(r.url)
     print(r.text)
 

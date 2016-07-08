@@ -4,9 +4,8 @@ import json
 import argparse
 import re
 
-def gist_branch_to_sha(gist_id, gist_branch):
-    # strangely, this only works when not authenticated?
-    r = requests.get('https://api.github.com/gists/{}/{}'.format(gist_id, gist_branch), stream=True)
+def gist_branch_to_sha(gist_id, gist_branch, params):
+    r = requests.get('https://api.github.com/gists/{}/{}'.format(gist_id, gist_branch), stream=True, params=params)
     content = r.raw.read(256, decode_content=True)
     if content.startswith('{"url":'):
         match = re.search('^{"url":"([^"]*)"', content)
@@ -30,8 +29,8 @@ if __name__ == "__main__":
     params = {}
     if args.secret.lower() == "env":
         params = {
-            "id": os.environ['GITHUB_ID'],
-            "secret": os.environ['GITHUB_SECRET']
+            "client_id": os.environ['GITHUB_ID'],
+            "client_secret": os.environ['GITHUB_SECRET']
         }
     elif args.secret.lower() != "none":
         try:
@@ -42,8 +41,7 @@ if __name__ == "__main__":
         except:
             print("secret.json file could not be read, requests will be unauthenticated")
 
-    # strangely, this only works when not authenticated?
-    sha = gist_branch_to_sha(args.id, args.branch)
+    sha = gist_branch_to_sha(args.id, args.branch, params)
     if sha != None:
         print(sha)
 

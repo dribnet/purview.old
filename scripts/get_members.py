@@ -13,8 +13,8 @@ if __name__ == "__main__":
     params = {}
     if args.secret.lower() == "env":
         params = {
-            "id": os.environ['GITHUB_ID'],
-            "secret": os.environ['GITHUB_SECRET']
+            "client_id": os.environ['GITHUB_ID'],
+            "client_secret": os.environ['GITHUB_SECRET']
         }
     elif args.secret.lower() != "none":
         try:

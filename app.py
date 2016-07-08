@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import re
 from flask import Flask, Response
 from flask import render_template
 import requests
@@ -11,8 +12,8 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 auth_params = {
-    "id": os.environ['GITHUB_ID'],
-    "secret": os.environ['GITHUB_SECRET']
+    "client_id": os.environ['GITHUB_ID'],
+    "client_secret": os.environ['GITHUB_SECRET']
 }
 
 # todo: deployed should be memcached
@@ -145,9 +146,9 @@ def get_members_html(org):
 
 ### should now be easy to add "list gist forks"
 
-# here is the core org members api
+# here is the core list gists forks api
 def forks_get_raw_json(gist_id):
-    r = requests.get('https://api.github.com/gists/{}/forks'.format(gist_id))
+    r = requests.get('https://api.github.com/gists/{}/forks'.format(gist_id), params=auth_params)
     return r.text
 
 forks_keys = ["id", "owner/login", "owner/avatar_url", "owner/html_url"]
@@ -170,6 +171,53 @@ def get_forks_html(gist_id):
     j = fetch_filtered_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id), forks_keys)
     return render_template("forks.html",
                            gist_id=gist_id, keys=forks_keys, forks=json.loads(j))
+
+# here is the core purview versions api
+def gist_branch_to_sha(gist_id, gist_branch):
+    r = requests.get('https://api.github.com/gists/{}/{}'.format(gist_id, gist_branch), stream=True, params=auth_params)
+    content = r.raw.read(256, decode_content=True).decode("utf-8")
+    print("CONTENT: ", content)
+    if content.startswith('{"url":'):
+        match = re.search('^{"url":"([^"]*)"', content)
+        if match == None:
+            return None
+        url = match.group(1)
+        parts = url.split("/")
+        return parts[-1]
+    else:
+        print("branch {} not found: {}".format(gist_branch, content))
+        return None
+
+def versions_get_raw_json(gist_id):
+    sha_of_purview_branch = gist_branch_to_sha(gist_id, "purview")
+    r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
+    return r.text
+
+versions_keys = ["sha"]
+def versions_cache_key(gist_id):
+    return "versions/{}".format(gist_id)
+
+@app.route("/versions/<gist_id>.raw.json")
+@cache(default_timeout)
+def get_versions_raw(gist_id):
+    return fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id))
+
+def get_converted_versions_json(gist_id):
+    d = json.loads(fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id)))
+    return json.dumps(d["payload"])
+
+@app.route("/versions/<gist_id>.json")
+@cache(default_timeout)
+def get_versions_json(gist_id):
+    return get_converted_versions_json(gist_id)
+
+@app.route("/versions/<gist_id>.html")
+@cache(default_timeout)
+def get_versions_html(gist_id):
+    j = get_converted_versions_json(gist_id)
+    return render_template("versions.html",
+                           gist_id=gist_id, pdata=json.loads(j))
+
 
 if __name__ == '__main__':
     app.run()

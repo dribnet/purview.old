@@ -23,9 +23,9 @@
                 {% endif %}
             {% endfor %}
             <td><a href="http://bl.ocks.org/{{ m["owner/login"] }}/{{ m["id"] }}">
-                <img src="http://bl.ocks.org/{{ m["owner/login"] }}/raw/{{ m["id"] }}/thumbnail.png"><br>(blocks)
+                <img src="http://purview-blocks.herokuapp.com/{{ m["owner/login"] }}/raw/{{ m["id"] }}/thumbnail.png"><br>(blocks)
             </a></td>
-            <td><a href="/versions/{{ m["id"] }}">purview</a></td>
+            <td><a href="/versions/{{ m["id"] }}.html">purview</a></td>
             </tr>
         {% endfor %}
     </table>

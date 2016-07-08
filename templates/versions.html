@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>versions of gist_id {{ gist_id }}</title>
+  </head>
+  <body>
+    <h1>versions of gist_id {{ gist_id }}</h1>
+
+    <table>
+        {% for row in pdata["commits"] %}
+            <tr>
+                <td><a href="http://bl.ocks.org/anonymous/{{ gist_id }}/{{ row[0] }}">
+                    <img src="http://purview-blocks.herokuapp.com/anonymous/raw/{{ gist_id }}/{{ row[0] }}/thumbnail.png"><br>{{ row[1] }}
+                </a></td>
+            </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>

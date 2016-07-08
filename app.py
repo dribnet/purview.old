@@ -190,7 +190,10 @@ def gist_branch_to_sha(gist_id, gist_branch):
 
 def versions_get_raw_json(gist_id):
     sha_of_purview_branch = gist_branch_to_sha(gist_id, "purview")
-    r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
+    if sha_of_purview_branch is not None:
+        r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
+    else:
+        r = requests.get('https://api.github.com/gists/{}'.format(gist_id), params=auth_params)
     return r.text
 
 versions_keys = ["sha"]
@@ -202,9 +205,16 @@ def versions_cache_key(gist_id):
 def get_versions_raw(gist_id):
     return fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id))
 
+def history_to_commits(d):
+    commits = [[v["version"], v["version"]] for v in d["history"]]
+    return {"commits": commits}
+
 def get_converted_versions_json(gist_id):
     d = json.loads(fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id)))
-    return json.dumps(d["payload"])
+    payload = d["payload"]
+    if "commits" in payload:
+        return json.dumps(payload)
+    return json.dumps(history_to_commits(payload))
 
 @app.route("/versions/<gist_id>.json")
 @cache(default_timeout)

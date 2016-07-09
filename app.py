@@ -2,7 +2,7 @@ import os
 import time
 import json
 import re
-from flask import Flask, Response
+from flask import Flask, Response, url_for
 from flask import render_template
 import requests
 from werkzeug.contrib.cache import SimpleCache
@@ -173,6 +173,12 @@ def get_forks_html(gist_id):
                            gist_id=gist_id, keys=forks_keys, forks=json.loads(j))
 
 # here is the core purview versions api
+# this could be set from env, etc. in future
+js_settings = {
+    "blocks_run_root": "http://bl.ocks.org/",
+    "purview_file_root": "http://purview-blocks.herokuapp.com/"
+}
+
 def gist_branch_to_sha(gist_id, gist_branch):
     r = requests.get('https://api.github.com/gists/{}/{}'.format(gist_id, gist_branch), stream=True, params=auth_params)
     content = r.raw.read(256, decode_content=True).decode("utf-8")
@@ -189,14 +195,15 @@ def gist_branch_to_sha(gist_id, gist_branch):
         return None
 
 def versions_get_raw_json(gist_id):
+    purview_text = "null"
     sha_of_purview_branch = gist_branch_to_sha(gist_id, "purview")
     if sha_of_purview_branch is not None:
         r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
-    else:
-        r = requests.get('https://api.github.com/gists/{}'.format(gist_id), params=auth_params)
-    return r.text
+        purview_text = r.text
 
-versions_keys = ["sha"]
+    r = requests.get('https://api.github.com/gists/{}'.format(gist_id), params=auth_params)
+    return '{"purview":' + purview_text + ', "api":' + r.text + '}'
+
 def versions_cache_key(gist_id):
     return "versions/{}".format(gist_id)
 
@@ -209,24 +216,62 @@ def history_to_commits(d):
     commits = [[v["version"], v["committed_at"]] for v in d["history"]]
     return {"commits": commits}
 
-def get_converted_versions_json(gist_id):
+def history_to_records(gist_id, login, desc, api):
+    meta = {
+        "login": login,
+        "id": gist_id,
+        "description": desc,
+        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
+    }
+    records = [{
+            "login": login,
+            "id": gist_id,
+            "sha": h["version"],
+            "description": None,
+            "created_at": h["committed_at"],
+            "updated_at": h["committed_at"]
+        } for h in api["history"]]
+    return {"meta": meta, "records": records}
+
+def purview_commits_to_records(gist_id, login, desc, commits):
+    meta = {
+        "login": login,
+        "id": gist_id,
+        "description": desc,
+        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
+    }
+    records = [{
+            "login": login,
+            "id": gist_id,
+            "sha": c[0],
+            "description": c[1],
+            "created_at": "unknown",
+            "updated_at": "unknown"
+        } for c in commits]
+    return {"meta": meta, "records": records}
+
+def get_converted_versions(gist_id):
     d = json.loads(fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id)))
     payload = d["payload"]
-    if "commits" in payload:
-        return json.dumps(payload)
-    return json.dumps(history_to_commits(payload))
+    login = payload["api"]["owner"]["login"]
+    desc = payload["api"]["description"]
+    if payload["purview"] is not None and "commits" in payload["purview"]:
+        return purview_commits_to_records(gist_id, login, desc, payload["purview"]["commits"])
+    return history_to_records(gist_id, login, desc, payload["api"])
 
 @app.route("/versions/<gist_id>.json")
 @cache(default_timeout)
 def get_versions_json(gist_id):
-    return get_converted_versions_json(gist_id)
+    return json.dumps(get_converted_versions(gist_id))
 
 @app.route("/versions/<gist_id>.html")
 @cache(default_timeout)
 def get_versions_html(gist_id):
-    j = get_converted_versions_json(gist_id)
-    return render_template("versions.html",
-                           gist_id=gist_id, pdata=json.loads(j))
+    d = get_converted_versions(gist_id)
+    j = json.dumps(d)
+    return render_template("versions.html", json=j,
+        meta=d["meta"], num_versions=len(d["records"]),
+        js_settings=js_settings, gist_id=gist_id)
 
 
 if __name__ == '__main__':

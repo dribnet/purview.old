@@ -101,7 +101,7 @@ function render(gists) {
       .data(gists, function(d) { return id_sha(d); })
     .enter().insert("a", "br")
       .attr("class", "gist gist--thumbnail")
-      .attr("href", function(d) { return blocks_run_root + login(d) + "/" + id_sha(d); })
+      .attr("href", function(d) { return "/versions/" + d.id + ".html"; })
       .style("background-image", function(d) { return "url(" + purview_file_root + login(d) + "/raw/" + id_sha(d) + "/thumbnail.png)"; });
 
   cell.append("div")

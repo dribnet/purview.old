@@ -151,6 +151,13 @@ def forks_get_raw_json(gist_id):
     r = requests.get('https://api.github.com/gists/{}/forks'.format(gist_id), params=auth_params)
     return r.text
 
+def forks_get_raw_json(gist_id):
+    r = requests.get('https://api.github.com/gists/{}'.format(gist_id), params=auth_params)
+    api_text = r.text
+    r = requests.get('https://api.github.com/gists/{}/forks'.format(gist_id), params=auth_params)
+    forks_text = r.text
+    return '{"forks":' + forks_text + ', "api":' + api_text + '}'
+
 forks_keys = ["id", "owner/login", "owner/avatar_url", "owner/html_url"]
 def forks_cache_key(gist_id):
     return "forks/{}".format(gist_id)
@@ -160,17 +167,45 @@ def forks_cache_key(gist_id):
 def get_forks_raw(gist_id):
     return fetch_and_cache_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id))
 
+def forks_to_records(gist_id, login, desc, forks, api):
+    meta = {
+        "login": login,
+        "id": gist_id,
+        "description": desc,
+        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
+    }
+    all_forks = [api] + forks
+    records = [{
+            "login": f["owner"]["login"],
+            "avatar_url": f["owner"]["avatar_url"],
+            "id": f["id"],
+            "description": f["description"],
+            "created_at": f["created_at"],
+            "updated_at": f["updated_at"]
+        } for f in all_forks]
+    return {"meta": meta, "records": records}
+
+def get_converted_forks(gist_id):
+    json_str = fetch_and_cache_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id))
+    d = json.loads(json_str)
+    payload = d["payload"]
+    login = payload["api"]["owner"]["login"]
+    desc = payload["api"]["description"]
+    return forks_to_records(gist_id, login, desc, payload["forks"], payload["api"])
+
 @app.route("/forks/<gist_id>.json")
 @cache(default_timeout)
 def get_forks_json(gist_id):
-    return fetch_filtered_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id), forks_keys)
+    return json.dumps(get_converted_forks(gist_id))
 
 @app.route("/forks/<gist_id>.html")
 @cache(default_timeout)
 def get_forks_html(gist_id):
-    j = fetch_filtered_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id), forks_keys)
-    return render_template("forks.html",
-                           gist_id=gist_id, keys=forks_keys, forks=json.loads(j))
+    d = get_converted_forks(gist_id)
+    j = json.dumps(d)
+    return render_template("forks.html", json=j,
+        meta=d["meta"], num_versions=len(d["records"]),
+        js_settings=js_settings, gist_id=gist_id)
 
 # here is the core purview versions api
 # this could be set from env, etc. in future

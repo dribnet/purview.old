@@ -201,6 +201,13 @@ iframe {
   max-height: 55px;
 }
 
+.gists .gist-low-description {
+  margin-top: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 55px;
+}
+
 .gists .gist-author {
   color: #777;
   font-weight: 300;

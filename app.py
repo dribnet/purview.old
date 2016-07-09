@@ -206,7 +206,7 @@ def get_versions_raw(gist_id):
     return fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id))
 
 def history_to_commits(d):
-    commits = [[v["version"], v["version"]] for v in d["history"]]
+    commits = [[v["version"], v["committed_at"]] for v in d["history"]]
     return {"commits": commits}
 
 def get_converted_versions_json(gist_id):

@@ -1,27 +1,27 @@
-<html>
-  <head>
-    <title>members of organization {{ org }}</title>
-  </head>
-  <body>
-    <h1>members of organization {{ org }}</h1>
+<!DOCTYPE html>
 
-    <table>
-        <tr>
-            {% for k in keys %}
-                <th>{{ k }}</th>
-            {% endfor %}
-        </tr>
-        {% for m in members %}
-            <tr>
-            {% for k in keys %}
-                {% if k == "avatar_url" %}
-                    <td><img src="{{ m[k] }}&s=60"/></td>
-                {% else %}
-                    <td>{{ m[k] }}</td>
-                {% endif %}
-            {% endfor %}
-            </tr>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1000">
+<title>members of organization {{ org }}</title>
+
+<link rel="icon" href="/static/favicon.png">
+<style>
+@import url("/static/style.css");
+</style>
+
+<h2>{{ org }}</h2>
+
+<table width="100%">
+    {% for r in rows %}
+        <tr width="100%">
+        {% for m in r %}
+            <td align="center">
+                <a href="http://bl.ocks.org/{{ m["login"] }}">
+                    <img src="{{ m["avatar_url"] }}&s=60" width="60" height="60"/>
+                    <br>
+                    {{ m["login"] }}
+            </td>
         {% endfor %}
-    </table>
-  </body>
-</html>
+        <tr>
+    {% endfor %}
+</table>

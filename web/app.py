@@ -134,15 +134,15 @@ def get_members_json(org):
 @app.route("/members/<org>.live.html")
 def get_members_live_html(org):
     j = fetch_filtered_json(members_get_raw_json, org, None, members_keys)
+    members = json.loads(j)
+    rows = [list(members[i:i+6]) for i in range(0, len(members), 6)]
     return render_template("members.html",
-                           org=org, keys=members_keys, members=json.loads(j))
+                           org=org, rows=rows)
 
 @app.route("/members/<org>.html")
 @cache(default_timeout)
 def get_members_html(org):
-    j = fetch_filtered_json(members_get_raw_json, org, members_cache_key(org), members_keys)
-    return render_template("members.html",
-                           org=org, keys=members_keys, members=json.loads(j))
+    return get_members_live_html(org)
 
 ### should now be easy to add "list gist forks"
 

@@ -106,8 +106,5 @@ function render(gists) {
     .append("div")
       .attr("class", "gist-description gist-underline")
       .text(function(d) { return d.description || d.created_at || d.id; });
-
-  d3.select(".gists").selectAll(".gist")
-      .sort(function(a, b) { return b.created_at - a.created_at; });
 }
 </script>

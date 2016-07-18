@@ -234,7 +234,11 @@ def versions_get_raw_json(gist_id):
     sha_of_purview_branch = gist_branch_to_sha(gist_id, "purview")
     if sha_of_purview_branch is not None:
         r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
-        purview_text = r.text
+        try:
+            parse_test = json.loads(r.text)
+            purview_text = r.text
+        except:
+            purview_text = '"bad_json"'
 
     r = requests.get('https://api.github.com/gists/{}'.format(gist_id), params=auth_params)
     return '{"purview":' + purview_text + ', "api":' + r.text + '}'
@@ -251,32 +255,9 @@ def history_to_commits(d):
     commits = [[v["version"], v["committed_at"]] for v in d["history"]]
     return {"commits": commits}
 
-def history_to_records(gist_id, login, desc, api):
-    meta = {
-        "login": login,
-        "id": gist_id,
-        "description": desc,
-        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
-    }
-    records = [{
-            "login": login,
-            "id": gist_id,
-            "sha": h["version"],
-            "description": None,
-            "created_at": h["committed_at"],
-            "updated_at": h["committed_at"]
-        } for h in api["history"]]
-    return {"meta": meta, "records": records}
-
-def purview_commits_to_records(gist_id, login, desc, purview):
+def fetch_purview_records(gist_id, login, purview):
     commits = purview["commits"]
-    meta = {
-        "login": login,
-        "id": gist_id,
-        "description": desc,
-        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
-    }
-    records = [{
+    purview_records = [{
             "login": login,
             "id": gist_id,
             "sha": c["sha"],
@@ -284,6 +265,43 @@ def purview_commits_to_records(gist_id, login, desc, purview):
             "created_at": "unknown",
             "updated_at": "unknown"
         } for c in commits]
+    return purview_records
+
+def history_to_records(gist_id, login, desc, purview_map, api):
+    purview_records = []
+    if purview_map is not None:
+        try:
+            purview_records = fetch_purview_records(gist_id, login, purview_map)
+        except:
+            purview_records = []
+    meta = {
+        "login": login,
+        "id": gist_id,
+        "description": desc,
+        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
+    }
+    known_shas = set()
+    for r in purview_records:
+        known_shas.add(r["sha"])
+
+    history_is_known = False
+    history_records = []
+    for h in api["history"]:
+        # quit iteration as soon as we hit a known sha
+        if h["version"] in known_shas:
+            break
+        history_records.append({
+                "login": login,
+                "id": gist_id,
+                "sha": h["version"],
+                "description": None,
+                "created_at": h["committed_at"],
+                "updated_at": h["committed_at"]
+            })
+
+    # combine known records
+    records = history_records + purview_records
+
     return {"meta": meta, "records": records}
 
 def get_converted_versions(gist_id):
@@ -291,14 +309,10 @@ def get_converted_versions(gist_id):
     payload = d["payload"]
     login = payload["api"]["owner"]["login"]
     desc = payload["api"]["description"]
+    purview_map = None
     if payload["purview"] is not None and "commits" in payload["purview"]:
-        try:
-            records = purview_commits_to_records(gist_id, login, desc, payload["purview"])
-            return records
-        except:
-            # parsing of purview.json failed, fallback to history
-            pass
-    return history_to_records(gist_id, login, desc, payload["api"])
+        purview_map = payload["purview"]
+    return history_to_records(gist_id, login, desc, purview_map, payload["api"])
 
 @app.route("/versions/<gist_id>.json")
 @cache(default_timeout)

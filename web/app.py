@@ -268,7 +268,8 @@ def history_to_records(gist_id, login, desc, api):
         } for h in api["history"]]
     return {"meta": meta, "records": records}
 
-def purview_commits_to_records(gist_id, login, desc, commits):
+def purview_commits_to_records(gist_id, login, desc, purview):
+    commits = purview["commits"]
     meta = {
         "login": login,
         "id": gist_id,
@@ -278,8 +279,8 @@ def purview_commits_to_records(gist_id, login, desc, commits):
     records = [{
             "login": login,
             "id": gist_id,
-            "sha": c[0],
-            "description": c[1],
+            "sha": c["sha"],
+            "description": c["name"],
             "created_at": "unknown",
             "updated_at": "unknown"
         } for c in commits]
@@ -291,7 +292,12 @@ def get_converted_versions(gist_id):
     login = payload["api"]["owner"]["login"]
     desc = payload["api"]["description"]
     if payload["purview"] is not None and "commits" in payload["purview"]:
-        return purview_commits_to_records(gist_id, login, desc, payload["purview"]["commits"])
+        try:
+            records = purview_commits_to_records(gist_id, login, desc, payload["purview"])
+            return records
+        except:
+            # parsing of purview.json failed, fallback to history
+            pass
     return history_to_records(gist_id, login, desc, payload["api"])
 
 @app.route("/versions/<gist_id>.json")

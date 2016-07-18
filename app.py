@@ -20,6 +20,11 @@ auth_params = {
 server_cache = SimpleCache()
 
 default_timeout = 5 * 60
+cache_timeout = default_timeout
+if app.config['DEVELOPMENT']:
+    default_timeout = 1
+    cache_timeout = None
+print("Default timeout is {}".format(default_timeout))
 
 @app.route('/')
 def hello():
@@ -75,7 +80,7 @@ def get_time_live():
     return time_get_raw_json(None)
 
 @app.route("/time.raw.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_time_raw():
     return fetch_and_cache_json(time_get_raw_json, None, time_cache_key)
 
@@ -84,7 +89,7 @@ def get_time_live_json():
     return fetch_filtered_json(time_get_raw_json, None, None, time_keys)
 
 @app.route("/time.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_time_json():
     return fetch_filtered_json(time_get_raw_json, None, time_cache_key, time_keys)
 
@@ -95,7 +100,7 @@ def get_time_live_html():
                            time=j)
 
 @app.route("/time.html")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_time_html():
     j = fetch_filtered_json(time_get_raw_json, None, time_cache_key, time_keys)
     return render_template("time.html",
@@ -118,7 +123,7 @@ def get_members_raw_live(org):
     return members_get_raw_json(org)
 
 @app.route("/members/<org>.raw.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_members_raw(org):
     return fetch_and_cache_json(members_get_raw_json, org, members_cache_key(org))
 
@@ -127,7 +132,7 @@ def get_members_live_json(org):
     return fetch_filtered_json(members_get_raw_json, org, None, members_keys)
 
 @app.route("/members/<org>.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_members_json(org):
     return fetch_filtered_json(members_get_raw_json, org, members_cache_key(org), members_keys)
 
@@ -140,7 +145,7 @@ def get_members_live_html(org):
                            org=org, rows=rows)
 
 @app.route("/members/<org>.html")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_members_html(org):
     return get_members_live_html(org)
 
@@ -163,7 +168,7 @@ def forks_cache_key(gist_id):
     return "forks/{}".format(gist_id)
 
 @app.route("/forks/<gist_id>.raw.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_forks_raw(gist_id):
     return fetch_and_cache_json(forks_get_raw_json, gist_id, forks_cache_key(gist_id))
 
@@ -194,12 +199,12 @@ def get_converted_forks(gist_id):
     return forks_to_records(gist_id, login, desc, payload["forks"], payload["api"])
 
 @app.route("/forks/<gist_id>.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_forks_json(gist_id):
     return json.dumps(get_converted_forks(gist_id))
 
 @app.route("/forks/<gist_id>.html")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_forks_html(gist_id):
     d = get_converted_forks(gist_id)
     j = json.dumps(d)
@@ -247,7 +252,7 @@ def versions_cache_key(gist_id):
     return "versions/{}".format(gist_id)
 
 @app.route("/versions/<gist_id>.raw.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_versions_raw(gist_id):
     return fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id))
 
@@ -315,12 +320,12 @@ def get_converted_versions(gist_id):
     return history_to_records(gist_id, login, desc, purview_map, payload["api"])
 
 @app.route("/versions/<gist_id>.json")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_versions_json(gist_id):
     return json.dumps(get_converted_versions(gist_id))
 
 @app.route("/versions/<gist_id>.html")
-@cache(default_timeout)
+@cache(cache_timeout)
 def get_versions_html(gist_id):
     d = get_converted_versions(gist_id)
     j = json.dumps(d)

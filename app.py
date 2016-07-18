@@ -21,7 +21,7 @@ server_cache = SimpleCache()
 
 default_timeout = 5 * 60
 cache_timeout = default_timeout
-if app.config['DEVELOPMENT']:
+if 'DEVELOPMENT' in app.config:
     default_timeout = 1
     cache_timeout = None
 print("Default timeout is {}".format(default_timeout))

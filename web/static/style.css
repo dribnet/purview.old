@@ -254,6 +254,14 @@ iframe {
   font-size: 11px;
 }
 
+.reveal:hover {
+  text-decoration: underline;
+}
+
+.reveal {
+  color: #000000;
+}
+
 @media only screen and (max-width: 860px) {
   .index-pop {
     display: none;

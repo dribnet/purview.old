@@ -14,8 +14,10 @@
     <div class="navigation">
       <a href="/">Home</a>
     </div>
-    <a class="user self" title="view gist" href="{{meta["blocks_link"]}}">{{meta["description"]}}</a>
-    <div class="date">({{num_versions}} versions)</div>
+    <a class="user self" title="view gist" href="{{meta["blocks_link"]}}">
+      {{meta["description"]}}
+    </a>
+    <div class="date" id="how_many"></div>
   </div>
 </header>
 
@@ -37,7 +39,35 @@ var formatDate = d3.time.format("%B %-d, %Y"),
 var blocks_run_root = "{{ js_settings["blocks_run_root"] }}";
 var purview_file_root = "{{ js_settings["purview_file_root"] }}";
 
-render({{ json|safe }}["records"]);
+var records = {{ json|safe }}["records"]
+var hidden_records = {{ json|safe }}["hidden_records"];
+var have_revealed_hidden = false;
+
+render(records);
+
+var howManyDiv = d3.select('#how_many');
+
+if(hidden_records && hidden_records.length > 0) {
+  howManyDiv.html("" + records.length + " versions shown");
+  var num_records = hidden_records.length + records.length
+  howManyDiv.append("span")
+    .on("click", reveal_hidden_records)
+    .html(" (show all " + num_records + ")")
+    .classed('reveal', true);
+}
+else {
+  howManyDiv.html("" + records.length + " known versions");
+}
+
+function reveal_hidden_records() {
+  if(have_revealed_hidden) {
+    return;
+  }
+  have_revealed_hidden = true;
+  render(hidden_records)
+  var num_records = hidden_records.length + records.length
+  howManyDiv.html("" + num_records + " known versions");
+}
 
 // iOS Safari hangs if you try to XMLHttpRequest before loading.
 if (!document.readyState || document.readyState === "complete") init();

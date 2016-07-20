@@ -222,7 +222,6 @@ js_settings = {
 def gist_branch_to_sha(gist_id, gist_branch):
     r = requests.get('https://api.github.com/gists/{}/{}'.format(gist_id, gist_branch), stream=True, params=auth_params)
     content = r.raw.read(256, decode_content=True).decode("utf-8")
-    print("CONTENT: ", content)
     if content.startswith('{"url":'):
         match = re.search('^{"url":"([^"]*)"', content)
         if match == None:
@@ -272,7 +271,7 @@ def fetch_purview_records(gist_id, login, purview):
         } for c in commits]
     return purview_records
 
-def history_to_records(gist_id, login, desc, purview_map, api):
+def history_to_records_trimmed(gist_id, login, desc, purview_map, api):
     purview_records = []
     if purview_map is not None:
         try:
@@ -309,6 +308,45 @@ def history_to_records(gist_id, login, desc, purview_map, api):
 
     return {"meta": meta, "records": records}
 
+def history_to_records(gist_id, login, desc, purview_map, api):
+    purview_records = []
+    if purview_map is not None:
+        try:
+            purview_records = fetch_purview_records(gist_id, login, purview_map)
+        except:
+            purview_records = []
+    meta = {
+        "login": login,
+        "id": gist_id,
+        "description": desc,
+        "blocks_link": js_settings["blocks_run_root"] + login + "/" + gist_id
+    }
+    known_shas = set()
+    for r in purview_records:
+        known_shas.add(r["sha"])
+
+    history_is_known = False
+    history_records = []
+    for h in api["history"]:
+        if not h["version"] in known_shas:
+            history_records.append({
+                    "login": login,
+                    "id": gist_id,
+                    "sha": h["version"],
+                    "description": None,
+                    "created_at": h["committed_at"],
+                    "updated_at": h["committed_at"]
+                })
+
+    hidden_records = None
+    if purview_records:
+        records = purview_records
+        hidden_records = history_records
+    else:
+        records = history_records
+
+    return {"meta": meta, "records": records, "hidden_records": hidden_records}
+
 def get_converted_versions(gist_id):
     d = json.loads(fetch_and_cache_json(versions_get_raw_json, gist_id, versions_cache_key(gist_id)))
     payload = d["payload"]
@@ -330,9 +368,7 @@ def get_versions_html(gist_id):
     d = get_converted_versions(gist_id)
     j = json.dumps(d)
     return render_template("versions.html", json=j,
-        meta=d["meta"], num_versions=len(d["records"]),
-        js_settings=js_settings, gist_id=gist_id)
-
+        meta=d["meta"], js_settings=js_settings, gist_id=gist_id)
 
 if __name__ == '__main__':
     app.run()

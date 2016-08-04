@@ -48,11 +48,11 @@ render(records);
 var howManyDiv = d3.select('#how_many');
 
 if(hidden_records && hidden_records.length > 0) {
-  howManyDiv.html("" + records.length + " versions shown ");
+  howManyDiv.html("" + records.length + " versions shown");
   var num_records = hidden_records.length + records.length
   howManyDiv.append("span")
     .on("click", reveal_hidden_records)
-    .html("-> click to show all " + num_records + " <-")
+    .html(" (show all " + num_records + ")")
     .classed('reveal', true);
 }
 else {

@@ -106,14 +106,41 @@ def get_time_html():
     return render_template("time.html",
                            time=j)
 
+with open('names.json') as json_data:
+    member_names = json.load(json_data)
+
 ### now do something similar for "org members"
+def populate_names_slow(json_text):
+    members = json.loads(json_text)
+    for i in range(len(members)):
+        member = members[i]
+        r = requests.get('https://api.github.com/users/{}'.format(member["login"]), params=auth_params)
+        user_info = json.loads(r.text)
+        if user_info["name"] is not None:
+            members[i]["name"] = user_info["name"]
+        else:
+            members[i]["name"] = "({})".format(member["login"])
+        print("User info for {} is {}".format(member["login"], user_info["name"]))
+    return json.dumps(members)
+
+def populate_names(json_text):
+    members = json.loads(json_text)
+    new_members = []
+    for i in range(len(members)):
+        if members[i]["login"] in member_names:
+            members[i]["name"] = member_names[members[i]["login"]]
+            new_members.append(members[i])
+        # else:
+        #     members[i]["name"] = members[i]["login"]
+
+    return json.dumps(new_members)
 
 # here is the core org members api
 def members_get_raw_json(org):
-    r = requests.get('https://api.github.com/orgs/{}/members'.format(org), params=auth_params)
-    return r.text
+    r = requests.get('https://api.github.com/orgs/{}/members?per_page=100'.format(org), params=auth_params)
+    return populate_names(r.text)
 
-members_keys = ["login", "avatar_url", "html_url"]
+members_keys = ["login", "name", "avatar_url", "html_url"]
 def members_cache_key(org):
     return "members/{}".format(org)
 

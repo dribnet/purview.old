@@ -258,6 +258,8 @@ def gist_branch_to_sha(gist_id, gist_branch):
 def versions_get_raw_json(gist_id):
     purview_text = "null"
     sha_of_purview_branch = gist_branch_to_sha(gist_id, "purview")
+    if sha_of_purview_branch is None:
+        sha_of_purview_branch = gist_branch_to_sha(gist_id, "master")
     if sha_of_purview_branch is not None:
         r = requests.get('http://purview-blocks.herokuapp.com/anonymous/raw/{}/{}/purview.json'.format(gist_id, sha_of_purview_branch))
         try:

@@ -8,6 +8,9 @@ def run_user_list(file, forks):
     # Reading data back
     with open(file, 'r') as f:
         data = json.load(f)
+    for f in forks:
+        if f["owner"]["login"] not in data:
+            print('{} not found in user list'.format(f["owner"]["login"]))
     for github_id in data:
         found = []
         for f in forks:

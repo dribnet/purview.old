@@ -156,7 +156,8 @@ iframe {
 }
 
 .gists {
-  max-width: 970px;
+  /*max-width: 970px;*/
+  max-width: 1455px;
 }
 
 .gists .gist {

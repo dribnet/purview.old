@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "login": "dribnet",
+    "id": "a0ef81cf281d53066ebb2416c1cae3b4",
+    "description": "MDDN 342 Final Project",
+    "blocks_link": "http://bl.ocks.org/dribnet/a0ef81cf281d53066ebb2416c1cae3b4"
+  },
+  "records": [
+    {
+      "login": "dribnet",
+      "name": "Tom White",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/945979?v=4",
+      "id": "db72032317305dea2cee2fc780853329"
+    },
+    {
+      "login": "FaultedStar",
+      "name": "phoebe zeller",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/13373481?v=4",
+      "id": "7e72e63bd4c664db9880d876cfda6b2f"
+    },
+    {
+      "login": "SophimayP",
+      "name": "Sophie Price",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/13373335?v=4",
+      "id": "fd270c7a895a29f3d60b21a0a94eca21"
+    },
+    {
+      "login": "Michael-Kelly-Digital-Design",
+      "name": "Michael Kelly",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12809827?v=4",
+      "id": "874cd7fea48047a3a463052da1ecea04"
+    }
+  ]
+}

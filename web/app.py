@@ -109,6 +109,7 @@ def get_time_html():
 with open('names.json') as json_data:
     member_names = json.load(json_data)
 
+### eg: http://localhost:5000/members/vusd-mddn342-2016.html ###
 ### now do something similar for "org members"
 def populate_names_slow(json_text):
     members = json.loads(json_text)
@@ -233,6 +234,23 @@ def get_forks_html(gist_id):
     return render_template("forks.html", json=j,
         meta=d["meta"], num_versions=len(d["records"]),
         js_settings=js_settings, gist_id=gist_id)
+
+assignment_table = {}
+def get_assignment(assign_id):
+    if not assign_id in assignment_table:
+        with open("{}.json".format(assign_id)) as json_data:
+            assign_data = json.load(json_data)
+        assignment_table[assign_id] = assign_data
+    return assignment_table[assign_id]
+
+@app.route("/assignment/<assign_id>.html")
+# @cache(cache_timeout)
+def get_assignment_html(assign_id):
+    d = get_assignment(assign_id)
+    j = json.dumps(d)
+    return render_template("assignment.html", json=j,
+        meta=d["meta"], num_versions=len(d["records"]),
+        js_settings=js_settings, assignment_id=assign_id)
 
 # here is the core purview versions api
 # this could be set from env, etc. in future

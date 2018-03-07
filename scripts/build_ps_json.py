@@ -1,0 +1,49 @@
+import sys
+import math
+import csv
+import json
+import re
+
+def load_csv(infile):
+    csv_data = []
+    # with open(infile, encoding = "ISO-8859-1") as tsvfile:
+    with open(infile, encoding = "ISO-8859-1") as tsvfile:
+      reader = csv.DictReader(tsvfile)
+      for row in reader:
+        csv_data.append(row)
+        # print(row)
+    return csv_data
+
+def build_data(csv_data):
+    d = []
+    # for row in csv_data[:3]:
+    for row in csv_data:
+        # print(row)
+        entry = {}
+        entry["blackboard"] = row["Username"]
+        entry["login"] = row["Answer 1"]
+        entry["name"] = row["Answer 2"]
+        raw_gist = row["Answer 3"]
+        m = re.search('github.com/(.+?)\.git', raw_gist)
+        if m:
+            found = m.group(1)
+        else:
+            found = "unknown"
+        entry["id"] = found
+        entry["avatar_url"] = "https://github.com/{}.png?size=40".format(entry["login"])
+
+        d.append(entry)
+    return d
+
+if __name__ == '__main__':
+    infile = sys.argv[1]
+    outfile = sys.argv[2]
+
+    reader = load_csv(infile)
+    out_data = build_data(reader)
+    d = {
+        "meta": {},
+        "records": out_data
+    }
+    with open(outfile, 'w') as f:
+        json.dump(d, f, indent=4)

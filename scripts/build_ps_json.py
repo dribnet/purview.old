@@ -6,13 +6,19 @@ import re
 
 def load_csv(infile):
     csv_data = []
+    with open(infile, encoding = "mac_roman") as tsvfile:
     # with open(infile, encoding = "ISO-8859-1") as tsvfile:
-    with open(infile, encoding = "ISO-8859-1") as tsvfile:
       reader = csv.DictReader(tsvfile)
       for row in reader:
         csv_data.append(row)
         # print(row)
     return csv_data
+
+def sanitize(s):
+    s = s.replace(u"\u2020", " ")
+    return s
+    # uniString = str(s, 'utf-8')
+    # return uniString
 
 def build_data(csv_data):
     d = []
@@ -20,16 +26,16 @@ def build_data(csv_data):
     for row in csv_data:
         # print(row)
         entry = {}
-        entry["blackboard"] = row["Username"]
-        entry["login"] = row["Answer 1"]
-        entry["name"] = row["Answer 2"]
+        entry["blackboard"] = sanitize(row["Username"])
+        entry["login"] = sanitize(row["Answer 1"])
+        entry["name"] = sanitize(row["Answer 2"])
         raw_gist = row["Answer 3"]
         m = re.search('github.com/(.+?)\.git', raw_gist)
         if m:
             found = m.group(1)
         else:
             found = "unknown"
-        entry["id"] = found
+        entry["id"] = sanitize(found)
         entry["avatar_url"] = "https://github.com/{}.png?size=40".format(entry["login"])
 
         d.append(entry)

@@ -39,7 +39,7 @@
         {
             "blackboard": "brownecall",
             "login": "Life563",
-            "name": "Callum\u00ffBrowne",
+            "name": "Callum Browne",
             "id": "fba9bf93ed85fd135a3cfb3d2c3d6be9",
             "avatar_url": "https://github.com/Life563.png?size=40"
         },
@@ -56,6 +56,20 @@
             "name": "Max Cadenhead",
             "id": "b9d35837b3ceff7137c6c43b9da481e0",
             "avatar_url": "https://github.com/MaxC98.png?size=40"
+        },
+        {
+            "blackboard": "chenyanz",
+            "login": "myamyanya",
+            "name": "Vivian CHEN",
+            "id": "myamyanya/vivianchen",
+            "avatar_url": "https://github.com/myamyanya.png?size=40"
+        },
+        {
+            "blackboard": "chenyuto",
+            "login": "cona991",
+            "name": "Yutong",
+            "id": "unknown",
+            "avatar_url": "https://github.com/cona991.png?size=40"
         },
         {
             "blackboard": "crampithom",
@@ -80,15 +94,15 @@
         },
         {
             "blackboard": "dengshuw",
-            "login": "Shuwen\u00ffDeng",
+            "login": "Shuwen Deng",
             "name": "Carrie Deng",
             "id": "b1e5f8cdef732801d721ef44a5038b85",
-            "avatar_url": "https://github.com/Shuwen\u00ffDeng.png?size=40"
+            "avatar_url": "https://github.com/Shuwen Deng.png?size=40"
         },
         {
             "blackboard": "djorovandr",
             "login": "AndrijaKiwi",
-            "name": "Andrija\u00ffDjorovic",
+            "name": "Andrija Djorovic",
             "id": "5c327b2b332f06e4bd755644f1f013dd",
             "avatar_url": "https://github.com/AndrijaKiwi.png?size=40"
         },
@@ -116,7 +130,7 @@
         {
             "blackboard": "faafuasien",
             "login": "sieniscreation",
-            "name": "Sieni\u00ffFaafuata",
+            "name": "Sieni Faafuata",
             "id": "c79b2f4cbd51621747d7d61510af7e10",
             "avatar_url": "https://github.com/sieniscreation.png?size=40"
         },
@@ -137,7 +151,7 @@
         {
             "blackboard": "galhans",
             "login": "hansolgal",
-            "name": "Hansol\u00ffGal",
+            "name": "Hansol Gal",
             "id": "d6deaa4eef8f45a4b6fb98a05974fc5a",
             "avatar_url": "https://github.com/hansolgal.png?size=40"
         },
@@ -156,6 +170,13 @@
             "avatar_url": "https://github.com/HartleThom.png?size=40"
         },
         {
+            "blackboard": "herbersean",
+            "login": "tnx21",
+            "name": "Sean Herbert",
+            "id": "cd7853b0dd6d1c57ed24f5fc160f7679",
+            "avatar_url": "https://github.com/tnx21.png?size=40"
+        },
+        {
             "blackboard": "hilberjohn",
             "login": "Dual-Spec",
             "name": "John Hilbert",
@@ -168,6 +189,13 @@
             "name": "Kathy Ho",
             "id": "380ba1c4a200db0692c3165d45bcbefd",
             "avatar_url": "https://github.com/katmelo.png?size=40"
+        },
+        {
+            "blackboard": "hooperaydn",
+            "login": "AydnH",
+            "name": "Aydn Hooper",
+            "id": "unknown",
+            "avatar_url": "https://github.com/AydnH.png?size=40"
         },
         {
             "blackboard": "huangmu",
@@ -193,7 +221,7 @@
         {
             "blackboard": "jiezich",
             "login": "Xforcen",
-            "name": "Zichen\u00ffJie",
+            "name": "Zichen Jie",
             "id": "bd47dd6f57d354203d0e47bf5582e6e8",
             "avatar_url": "https://github.com/Xforcen.png?size=40"
         },
@@ -235,7 +263,7 @@
         {
             "blackboard": "makenehanl",
             "login": "HanleyMakene",
-            "name": "Hanley\u00ffMakene",
+            "name": "Hanley Makene",
             "id": "a33e1dbc19d1fdeea90a1e78f9187b0f",
             "avatar_url": "https://github.com/HanleyMakene.png?size=40"
         },
@@ -263,9 +291,16 @@
         {
             "blackboard": "moliju",
             "login": "Molisang",
-            "name": "Lijun\u00ffMo",
+            "name": "Lijun Mo",
             "id": "a8ced33bbd0355ae8a6e9ca00dc90e0c",
             "avatar_url": "https://github.com/Molisang.png?size=40"
+        },
+        {
+            "blackboard": "monkmaemil",
+            "login": "EmilyMonkman",
+            "name": "Emily Monkman",
+            "id": "unknown",
+            "avatar_url": "https://github.com/EmilyMonkman.png?size=40"
         },
         {
             "blackboard": "ngyik",
@@ -298,7 +333,7 @@
         {
             "blackboard": "prakrich",
             "login": "prakrichie",
-            "name": "Richie\u00ff",
+            "name": "Richie ",
             "id": "30b37e1253cb1818cf599ff4018aa182",
             "avatar_url": "https://github.com/prakrichie.png?size=40"
         },
@@ -317,6 +352,20 @@
             "avatar_url": "https://github.com/richardsmje.png?size=40"
         },
         {
+            "blackboard": "ritthiritt",
+            "login": "pandaanz",
+            "name": "Aliz Ritthisri",
+            "id": "pandaanz/aliz",
+            "avatar_url": "https://github.com/pandaanz.png?size=40"
+        },
+        {
+            "blackboard": "robsongeor",
+            "login": "robsongeor",
+            "name": "George Robson",
+            "id": "864026858586c959009c8bb4205fbe01",
+            "avatar_url": "https://github.com/robsongeor.png?size=40"
+        },
+        {
             "blackboard": "scarlestel",
             "login": "StellaScarlett",
             "name": "Stella Vokia-Scarlett",
@@ -333,7 +382,7 @@
         {
             "blackboard": "skippenga",
             "login": "Kayskip",
-            "name": "Karu\u00ffSkipper",
+            "name": "Karu Skipper",
             "id": "beb6c0b1fad6e473429838c586603181",
             "avatar_url": "https://github.com/Kayskip.png?size=40"
         },
@@ -350,6 +399,13 @@
             "name": "Sylvia Song",
             "id": "b5651b5cf7d8e02222ba6228ecf37f11",
             "avatar_url": "https://github.com/sjy22122.png?size=40"
+        },
+        {
+            "blackboard": "spearmbenj",
+            "login": "BenJSpearman",
+            "name": "Ben Spearman",
+            "id": "475dfa3a3e55c4420bc4ecec5a8b987d",
+            "avatar_url": "https://github.com/BenJSpearman.png?size=40"
         },
         {
             "blackboard": "sporireub",
@@ -382,7 +438,7 @@
         {
             "blackboard": "tikauameha",
             "login": "MehauWilliams",
-            "name": "Mehau\u00ffWilliams",
+            "name": "Mehau Williams",
             "id": "8fad2e018ccfca4565cf2b25e775d1ac",
             "avatar_url": "https://github.com/MehauWilliams.png?size=40"
         },
@@ -408,6 +464,13 @@
             "avatar_url": "https://github.com/katvillareal.png?size=40"
         },
         {
+            "blackboard": "wilsonamy3",
+            "login": "missfabulous",
+            "name": "Amy Wilson",
+            "id": "ebc113c82b7658d5e8166e0d3e2e47a7",
+            "avatar_url": "https://github.com/missfabulous.png?size=40"
+        },
+        {
             "blackboard": "xiaolu",
             "login": "xlShawn",
             "name": "Lu Xiao",
@@ -420,13 +483,6 @@
             "name": "Jackie Xu",
             "id": "b6c6f439167135e38d7818be623f029e",
             "avatar_url": "https://github.com/Jackie2017vic.png?size=40"
-        },
-        {
-            "blackboard": "yananqi",
-            "login": "anqiscissor",
-            "name": "Anqi\u00ffYan",
-            "id": "095fdc368c3f0c164e19a763a76586db",
-            "avatar_url": "https://github.com/anqiscissor.png?size=40"
         },
         {
             "blackboard": "yipbrad",
@@ -445,16 +501,23 @@
         {
             "blackboard": "zhangshil3",
             "login": "SilionZ",
-            "name": "Shile\u00ffZhang",
+            "name": "Shile Zhang",
             "id": "35a0d867956f6f60eecf3d167c32050d",
             "avatar_url": "https://github.com/SilionZ.png?size=40"
         },
         {
             "blackboard": "zhaoxun",
             "login": "z564249622",
-            "name": "Xun\u00ffZhao",
+            "name": "Xun Zhao",
             "id": "f923338d60cf953b13a31a925d9dbfb9",
             "avatar_url": "https://github.com/z564249622.png?size=40"
+        },
+        {
+            "blackboard": "zouzhen1",
+            "login": "yvonne0703",
+            "name": "Yvonne Zou",
+            "id": "9423a4e439791b1b43901596cc52b713",
+            "avatar_url": "https://github.com/yvonne0703.png?size=40"
         }
     ]
 }

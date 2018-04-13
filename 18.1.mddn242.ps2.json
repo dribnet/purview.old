@@ -152,7 +152,7 @@
       "blackboard": "hooperaydn",
       "login": "AydnH",
       "name": "Aydn Hooper",
-      "id": "NONE",
+      "id": "6deae0b79eef17991a43cd2816f497f3",
       "avatar_url": "https://github.com/AydnH.png?size=40"
     },
     {
@@ -327,7 +327,7 @@
       "blackboard": "royalliam",
       "login": "liamroyal",
       "name": "Liam Royal",
-      "id": "NONE",
+      "id": "41b781cd710aefecfc9a4381a026f45e",
       "avatar_url": "https://github.com/liamroyal.png?size=40"
     },
     {
@@ -425,7 +425,7 @@
       "blackboard": "scarlestel",
       "login": "StellaScarlett",
       "name": "Stella Vokia-Scarlett",
-      "id": "NONE",
+      "id": "ca1f7ead99ba58d1c4bdacb37a348395",
       "avatar_url": "https://github.com/StellaScarlett.png?size=40"
     },
     {
@@ -437,10 +437,10 @@
     },
     {
       "blackboard": "xiaolu",
-      "login": "xlShawn",
+      "login": "LuXiao1",
       "name": "Lu Xiao",
-      "id": "NONE",
-      "avatar_url": "https://github.com/xlShawn.png?size=40"
+      "id": "ca90fbaf9deababcf574d5645e0f329c",
+      "avatar_url": "https://github.com/LuXiao1.png?size=40"
     },
     {
       "blackboard": "xuwanl",
@@ -511,13 +511,6 @@
       "name": "Michael Kelly",
       "id": "NONE",
       "avatar_url": "https://github.com/Michael-Kelly-Digital-Design.png?size=40"
-    },
-    {
-      "blackboard": "unknown1",
-      "login": "LuXiao1",
-      "name": "Unknown LuXiao1",
-      "id": "ca90fbaf9deababcf574d5645e0f329c",
-      "avatar_url": "https://github.com/LuXiao1.png?size=40"
     }
   ]
 }

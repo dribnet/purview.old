@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # argparse
     parser = argparse.ArgumentParser(description='Fetch members of an org')    
     parser.add_argument('-o','--org', help='filter by org', default=None)
-    parser.add_argument('-i','--id', help='id of gist', default="a937cdee02e0ee311d500000cf9e7a6c")
+    parser.add_argument('-i','--id', help='id of gist', default="65bf12998a2f05df4418d0428e67436c")
     parser.add_argument('-s','--secret', help='json credentials (or "none")', default="env")
     parser.add_argument('-d','--output-directory', dest='outdir',
         help='output directory for cloning', default="cloned")
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         except:
             print("secret.json file could not be read, requests will be unauthenticated")
 
-    with open("test.json") as json_file:
+    with open("ps2_forks.json") as json_file:
         test_text=json_file.read()
     clone_all_forks(test_text, args.outdir)
     # r = requests.get('https://api.github.com/gists/{}/forks'.format(args.id), params=params)

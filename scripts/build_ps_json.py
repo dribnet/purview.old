@@ -26,16 +26,16 @@ def build_data(csv_data):
     for row in csv_data:
         # print(row)
         entry = {}
-        entry["blackboard"] = sanitize(row["Username"])
-        entry["login"] = sanitize(row["Answer 1"])
-        entry["name"] = sanitize(row["Answer 2"])
-        raw_gist = row["Answer 3"]
-        m = re.search('github.com/(.+?)\.git', raw_gist)
-        if m:
-            found = m.group(1)
-        else:
-            found = "unknown"
-        entry["id"] = sanitize(found)
+        entry["blackboard"] = sanitize(row["blackboard"])
+        entry["login"] = sanitize(row["github"])
+        entry["name"] = "{} {}".format(sanitize(row["first"]),sanitize(row["last"]))
+        # raw_gist = row["Answer 3"]
+        # m = re.search('github.com/(.+?)\.git', raw_gist)
+        # if m:
+        #     found = m.group(1)
+        # else:
+        #     found = "unknown"
+        entry["id"] = sanitize(row["SHA"])
         entry["avatar_url"] = "https://github.com/{}.png?size=40".format(entry["login"])
 
         d.append(entry)

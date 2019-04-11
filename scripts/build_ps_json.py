@@ -28,7 +28,7 @@ def build_data(csv_data):
         entry = {}
         entry["blackboard"] = sanitize(row["blackboard"])
         entry["login"] = sanitize(row["github"])
-        entry["name"] = "{} {}".format(sanitize(row["first"]),sanitize(row["last"]))
+        entry["name"] = "{}".format(sanitize(row["name"]))
         # raw_gist = row["Answer 3"]
         # m = re.search('github.com/(.+?)\.git', raw_gist)
         # if m:

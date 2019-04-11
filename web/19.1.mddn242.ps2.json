@@ -5,7 +5,7 @@
             "blackboard": "achtensean",
             "login": "snachten",
             "name": "Sean Achten",
-            "id": "b6cbabb92d570238002dc38b68da7c83",
+            "id": "f78670426a865645365e1e779553cb7b",
             "avatar_url": "https://github.com/snachten.png?size=40"
         },
         {
@@ -240,6 +240,13 @@
             "avatar_url": "https://github.com/cocoma241.png?size=40"
         },
         {
+            "blackboard": "machersand",
+            "login": "machersand",
+            "name": "Sammy Macher",
+            "id": "385487675d51c0e234f3d741d12d1564",
+            "avatar_url": "https://github.com/machersand.png?size=40"
+        },
+        {
             "blackboard": "magalljame",
             "login": "j-salvador",
             "name": "James Magallanes",
@@ -359,6 +366,13 @@
             "avatar_url": "https://github.com/toemily.png?size=40"
         },
         {
+            "blackboard": "",
+            "login": "Heidii911",
+            "name": "Heidi Truong",
+            "id": "fec4c9bee497ac2ad2aceb0612ae1990",
+            "avatar_url": "https://github.com/Heidii911.png?size=40"
+        },
+        {
             "blackboard": "tualaleig",
             "login": "tualalauvao01",
             "name": "Leigh Tuala-Lauvao",
@@ -371,6 +385,13 @@
             "name": "Dylan Wansbrough",
             "id": "b9955b41f8198d68391445e0b195e6b4",
             "avatar_url": "https://github.com/Dylan-Wansbrough.png?size=40"
+        },
+        {
+            "blackboard": "wilkinrobe1",
+            "login": "Robert-Wilkins",
+            "name": "Robert Wilkins",
+            "id": "ee731d7b433307c18d9b17446a2c36ed",
+            "avatar_url": "https://github.com/Robert-Wilkins.png?size=40"
         },
         {
             "blackboard": "wujuny",

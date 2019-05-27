@@ -16,6 +16,10 @@ def load_csv(infile):
 
 def sanitize(s):
     s = s.replace(u"\u2020", " ")
+    s = s.replace(u"\u00ac", "")
+    s = s.replace(u"\u221a", "")
+    s = s.replace(u"\u00c7", "")
+    s = s.strip()
     return s
     # uniString = str(s, 'utf-8')
     # return uniString

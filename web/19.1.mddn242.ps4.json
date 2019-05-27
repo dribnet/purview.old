@@ -32,7 +32,7 @@
         {
             "blackboard": "bating",
             "login": "Rain-Ba",
-            "name": "Rain\u00ac Ba",
+            "name": "Rain Ba",
             "id": "814ef59a11436f12fbf01178677b6210",
             "avatar_url": "https://github.com/Rain-Ba.png?size=40"
         },
@@ -74,7 +74,7 @@
         {
             "blackboard": "campberebe3",
             "login": "Beximus",
-            "name": "Bex\u00ac Campbell-Redl",
+            "name": "Bex Campbell-Redl",
             "id": "532bd6713568f4396ddb0bca9938f664",
             "avatar_url": "https://github.com/Beximus.png?size=40"
         },
@@ -102,7 +102,7 @@
         {
             "blackboard": "chenziyi2",
             "login": "Ziyi1cc",
-            "name": "Ziyi\u00ac Chen",
+            "name": "Ziyi Chen",
             "id": "8fba6cd05b64d83dbe0f8523eadeba2e",
             "avatar_url": "https://github.com/Ziyi1cc.png?size=40"
         },
@@ -116,7 +116,7 @@
         {
             "blackboard": "coopertia1",
             "login": "COOPERTIA1",
-            "name": "Tia\u00ac Cooper-Theobald",
+            "name": "Tia Cooper-Theobald",
             "id": "af0864bb22bab8ed77147be91e3187fd",
             "avatar_url": "https://github.com/COOPERTIA1.png?size=40"
         },
@@ -137,7 +137,7 @@
         {
             "blackboard": "ebuegabr",
             "login": "Chubbz24",
-            "name": "Renzo\u00ac Ebue",
+            "name": "Renzo Ebue",
             "id": "NONE",
             "avatar_url": "https://github.com/Chubbz24.png?size=40"
         },
@@ -151,7 +151,7 @@
         {
             "blackboard": "francivict",
             "login": "samwert",
-            "name": "Victor Francis\u00ac ",
+            "name": "Victor Francis",
             "id": "a3bcf896417e912bbb2b60b7220c2126",
             "avatar_url": "https://github.com/samwert.png?size=40"
         },
@@ -179,7 +179,7 @@
         {
             "blackboard": "idrisfath",
             "login": "Lateefah7541",
-            "name": "Lateefah\u00ac Idris",
+            "name": "Lateefah Idris",
             "id": "2207df75450f8726431c858b3f75ae93",
             "avatar_url": "https://github.com/Lateefah7541.png?size=40"
         },
@@ -192,10 +192,10 @@
         },
         {
             "blackboard": "jiangxing",
-            "login": "\u221a\u00c7 CherynJ",
-            "name": "Cheryn\u00ac Jiang",
+            "login": "CherynJ",
+            "name": "Cheryn Jiang",
             "id": "b9b31594e3dbae92db8369ff597b6685",
-            "avatar_url": "https://github.com/\u221a\u00c7 CherynJ.png?size=40"
+            "avatar_url": "https://github.com/CherynJ.png?size=40"
         },
         {
             "blackboard": "johnsemich",
@@ -291,7 +291,7 @@
         {
             "blackboard": "parkhye",
             "login": "iamsoveryangry",
-            "name": "Dorothy\u00ac Park",
+            "name": "Dorothy Park",
             "id": "c3fa3e7942e441d50571059cbb0eaa9a",
             "avatar_url": "https://github.com/iamsoveryangry.png?size=40"
         },
@@ -318,22 +318,22 @@
         },
         {
             "blackboard": "riddwill",
-            "login": "Willridd\u221a\u00c7",
+            "login": "Willridd",
             "name": "Will Ridd",
             "id": "aceaff5667398be7af8a9dc2a9bb5286",
-            "avatar_url": "https://github.com/Willridd\u221a\u00c7.png?size=40"
+            "avatar_url": "https://github.com/Willridd.png?size=40"
         },
         {
             "blackboard": "ruanbeib",
             "login": "Ruanbeib",
-            "name": "Becky\u00ac Ruan",
+            "name": "Becky Ruan",
             "id": "NONE",
             "avatar_url": "https://github.com/Ruanbeib.png?size=40"
         },
         {
             "blackboard": "schifflenn",
             "login": "SchiffersL",
-            "name": "Lennart\u00ac Schiffers",
+            "name": "Lennart Schiffers",
             "id": "NONE",
             "avatar_url": "https://github.com/SchiffersL.png?size=40"
         },
@@ -389,7 +389,7 @@
         {
             "blackboard": "wujuny",
             "login": "junw02",
-            "name": "Junyi\u00ac Wu",
+            "name": "Junyi Wu",
             "id": "NONE",
             "avatar_url": "https://github.com/junw02.png?size=40"
         },
@@ -417,7 +417,7 @@
         {
             "blackboard": "zhangjunq",
             "login": "kichyan",
-            "name": "Kiki\u00ac Zhang",
+            "name": "Kiki Zhang",
             "id": "d1d87e227b8e0309c256d7315368e8d7",
             "avatar_url": "https://github.com/kichyan.png?size=40"
         },
@@ -431,7 +431,7 @@
         {
             "blackboard": "zhangwenl",
             "login": "wenlinzhang42",
-            "name": "Wenlin\u00ac Zhang",
+            "name": "Wenlin Zhang",
             "id": "dd0b0b29509a9fcab4369e859a7b11f3",
             "avatar_url": "https://github.com/wenlinzhang42.png?size=40"
         }

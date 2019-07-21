@@ -96,7 +96,7 @@
             "blackboard": "hooperaydn",
             "login": "AydnH",
             "name": "Aydn Hooper",
-            "id": "NONE",
+            "id": "f8925d94c783217e5f5024b501581a77",
             "avatar_url": "https://github.com/AydnH.png?size=40"
         },
         {
@@ -194,7 +194,7 @@
             "blackboard": "parkhye",
             "login": "iamsoveryangry",
             "name": "Dorothy Park",
-            "id": "2c95c1d41e9ae779baa70f369cbfaa38",
+            "id": "01816295fd99083224ffd99cdfb15875",
             "avatar_url": "https://github.com/iamsoveryangry.png?size=40"
         },
         {
@@ -310,6 +310,13 @@
             "avatar_url": "https://github.com/wheeleben.png?size=40"
         },
         {
+            "blackboard": "wilkinrobe1",
+            "login": "Robert-Wilkins",
+            "name": "Robert Wilkins",
+            "id": "68e4985d07ea08b9134f91e72a8ed1aa",
+            "avatar_url": "https://github.com/Robert-Wilkins.png?size=40"
+        },
+        {
             "blackboard": "wujuny",
             "login": "junw02",
             "name": "Junyi Wu",
@@ -322,6 +329,13 @@
             "name": "Lu Xiao",
             "id": "3ae714bf803d0e0fe9e60d84f5f966a2",
             "avatar_url": "https://github.com/xlShawn.png?size=40"
+        },
+        {
+            "blackboard": "xuwanl",
+            "login": "Jackie2017vic",
+            "name": "Jackie Xu",
+            "id": "9c9c4da1de9311d9a5261272e26d6172",
+            "avatar_url": "https://github.com/Jackie2017vic.png?size=40"
         },
         {
             "blackboard": "yeehann",
